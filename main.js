@@ -8,8 +8,29 @@ const scene = new THREE.Scene();
  
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/ window.innerHeight, 0.1, 1000);
  
-// let bg; //
- 
+
+ //sizes for the canvas resize
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight
+}
+
+//function for the canvas resize (V. Impotant)
+window.addEventListener('resize', () =>
+{
+  // Update sizes
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+
+  // Update camera
+  camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix()
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
 const renderer = new THREE.WebGL1Renderer({
  canvas: document.querySelector('#bg'),
 });
@@ -17,31 +38,7 @@ const renderer = new THREE.WebGL1Renderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
  
- 
-/*
-window.onLoad = function(){
- console.log('loading.');
- bg = document.getElementById("bg");
- prepareDocument();
- resizeCanvas();
-}
- 
-window.onresize = function(){
- console.log('resizing');
- resizeCanvas();
-}
- 
-function resizeCanvas(){
- bg.width = window.innerWidth;
- bg.height = window.innerHeight;
-}
- 
-function prepareDocument(){
- document.body.style.padding = "0px";
- document.body.style.margin = "0px";
-}
- 
-*/
+
  
 camera.position.setZ(30);
 camera.position.setX(-3);
@@ -84,7 +81,7 @@ function addStar() {
  
 Array(200).fill().forEach(addStar);
  
-const spaceTexture = new THREE.TextureLoader().load('grid1.jpeg');
+const spaceTexture = new THREE.TextureLoader().load('grid2.jpeg');
 scene.background = spaceTexture;
  
  
